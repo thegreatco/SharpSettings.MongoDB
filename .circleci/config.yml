@@ -1,0 +1,46 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: microsoft/dotnet:sdk
+    working_directory: ~/repo
+    environment:
+      - DOTNET_CLI_TELEMETRY_OPTOUT: "true"
+      - DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "true"
+    steps:
+      - checkout
+      - run: dotnet restore SharpSettings.MongoDB.sln
+      - run: dotnet build src/SharpSettings.MongoDB/SharpSettings.MongoDB.csproj
+  deploy:
+    docker:
+      - image: microsoft/dotnet:sdk
+    environment:
+      - DOTNET_CLI_TELEMETRY_OPTOUT: "true"
+      - DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "true"
+    steps:
+      - checkout
+      - run:
+          command: |
+            echo 'export FILE_VERSION=${CIRCLE_TAG}.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
+            echo 'export NUGET_VERSION=${CIRCLE_TAG}' >> $BASH_ENV
+            source $BASH_ENV
+      - run: dotnet restore SharpSettings.MongoDB.sln
+      - run: dotnet pack src/SharpSettings.MongoDB/SharpSettings.MongoDB.csproj -o ../../nupkgs --include-symbols /p:Version=${NUGET_VERSION}
+      - run: dotnet nuget push nupkgs/SharpSettings.MongoDB.${NUGET_VERSION}.symbols.nupkg -k ${NUGET_API_KEY} -s https://api.nuget.org/v3/index.json
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
+      - deploy:
+          requires: 
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^(?:[0-9]+\.?)+/
