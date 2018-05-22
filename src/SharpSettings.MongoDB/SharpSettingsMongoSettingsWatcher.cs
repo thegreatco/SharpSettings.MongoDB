@@ -22,11 +22,11 @@ namespace SharpSettings.MongoDB
 
         private TSettingsObject _settings;
 
-        public async Task<TSettingsObject> GetSettingsAsync(CancellationToken token = default(CancellationToken))
+        public async Task<TSettingsObject> GetSettingsAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            while(_settings == null && !token.IsCancellationRequested)
+            while(_settings == null && !cancellationToken.IsCancellationRequested)
             {
-                await Task.Delay(100, token);
+                await Task.Delay(100, cancellationToken);
             }
 
             return _settings;
