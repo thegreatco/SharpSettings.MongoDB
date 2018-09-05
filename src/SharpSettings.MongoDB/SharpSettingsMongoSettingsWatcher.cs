@@ -56,7 +56,7 @@ namespace SharpSettings.MongoDB
                 forcePolling == false)
             {
                 _store.Logger?.Debug("Calling start on a Watcher task.");
-                _watcherTask = Task.Factory.StartNew(TailAsync, _cancellationTokenSource.Token, TaskCreationOptions.LongRunning,
+                _watcherTask = Task.Factory.StartNew(ChangeStream, _cancellationTokenSource.Token, TaskCreationOptions.LongRunning,
                     TaskScheduler.Default);
                 _store.Logger?.Debug("Finished calling start on a Watcher task.");
             }
@@ -80,7 +80,7 @@ namespace SharpSettings.MongoDB
                     {
                         _store.Logger?.Trace("Detected change to replica set. Changing to OpLog Tail.");
 
-                        _watcherTask = Task.Factory.StartNew(TailAsync, _cancellationTokenSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+                        _watcherTask = Task.Factory.StartNew(ChangeStream, _cancellationTokenSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
                         break;
                     }
                     var tmpSettings = await _store.FindAsync(_settingsId);
@@ -108,7 +108,7 @@ namespace SharpSettings.MongoDB
             _store.Logger?.Trace("Ending a Polling task.");
         }
 
-        private async Task TailAsync()
+        private async Task ChangeStream()
         {
             _store.Logger?.Trace("Starting a Tailing task.");
             while (!_cancellationTokenSource.IsCancellationRequested)
@@ -149,6 +149,7 @@ namespace SharpSettings.MongoDB
                 catch (Exception ex)
                 {
                     _store.Logger?.Error(ex);
+                    _store.Logger?.Trace("Change Stream watcher ended due to an exception, restarting...");
                 }
             }
             _store.Logger?.Trace("Ending a Tailing task.");
