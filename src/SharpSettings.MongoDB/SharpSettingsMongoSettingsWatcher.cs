@@ -123,6 +123,9 @@ namespace SharpSettings.MongoDB
                         break;
                     }
 
+                    // Perform the initial settings load.
+                    _settings = await _store.FindAsync(_settingsId);
+
                     var changeStream = await _store.Store.WatchAsync(new ChangeStreamOptions()
                     {
                         FullDocument = ChangeStreamFullDocumentOption.UpdateLookup
