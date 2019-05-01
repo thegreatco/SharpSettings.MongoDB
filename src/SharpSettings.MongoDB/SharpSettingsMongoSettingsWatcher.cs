@@ -22,7 +22,7 @@ namespace SharpSettings.MongoDB
 
         private TSettingsObject _settings;
 
-        public async Task<TSettingsObject> GetSettingsAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<TSettingsObject> GetSettingsAsync(CancellationToken cancellationToken = default)
         {
             while(_settings == null && !cancellationToken.IsCancellationRequested)
             {
@@ -35,14 +35,14 @@ namespace SharpSettings.MongoDB
         // ReSharper disable once UnusedMember.Global
         public SharpSettingsMongoSettingsWatcher(SharpSettingsMongoDataStore<TSettingsObject> settingsStore, WatchableSettings<string> settings,
             Action<TSettingsObject> settingsUpdatedCallback, bool forcePolling = false,
-            IEnumerable<BaseTypeComparer> customComparers = null, CancellationTokenSource cts = default(CancellationTokenSource))
+            IEnumerable<BaseTypeComparer> customComparers = null, CancellationTokenSource cts = default)
             : this(settingsStore, settings.Id, settingsUpdatedCallback, forcePolling, customComparers, cts)
         {
         }
 
         public SharpSettingsMongoSettingsWatcher(SharpSettingsMongoDataStore<TSettingsObject> settingsStore, string settingsId,
             Action<TSettingsObject> settingsUpdatedCallback, bool forcePolling = false,
-            IEnumerable<BaseTypeComparer> customComparers = null, CancellationTokenSource cts = default(CancellationTokenSource))
+            IEnumerable<BaseTypeComparer> customComparers = null, CancellationTokenSource cts = default)
         {
             _cancellationTokenSource = cts;
             _forcePolling = forcePolling;
