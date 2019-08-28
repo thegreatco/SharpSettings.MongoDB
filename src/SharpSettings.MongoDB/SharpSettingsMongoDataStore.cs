@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
-using SharpSettings;
 
 namespace SharpSettings.MongoDB
 {
@@ -8,21 +8,28 @@ namespace SharpSettings.MongoDB
         where TSettingsObject : WatchableSettings<string>
     {
         internal readonly IMongoCollection<TSettingsObject> Store;
-        internal readonly ISharpSettingsLogger Logger;
+        private readonly ILogger _logger;
 
-        public SharpSettingsMongoDataStore(IMongoCollection<TSettingsObject> store, ISharpSettingsLogger logger = null)
+        public SharpSettingsMongoDataStore(IMongoCollection<TSettingsObject> store, ILogger logger = null)
         {
             Store = store;
-            Logger = logger;
+            _logger = logger;
         }
 
-        public async Task<TSettingsObject> FindAsync(string settingsId)
+        public SharpSettingsMongoDataStore(IMongoCollection<TSettingsObject> store, ILoggerFactory loggerFactory = null)
+            : this (store, loggerFactory?.CreateLogger<SharpSettingsMongoDataStore<TSettingsObject>>())
         {
-            return await Store.Find(Builders<TSettingsObject>.Filter.Eq(x => x.Id, settingsId)).SingleOrDefaultAsync();
+        }
+
+        public async ValueTask<TSettingsObject> FindAsync(string settingsId)
+        {
+            _logger?.LogDebug("Retrieving settings");
+            return await Store.Find(Builders<TSettingsObject>.Filter.Eq(x => x.Id, settingsId)).SingleOrDefaultAsync().ConfigureAwait(false);
         }
 
         public TSettingsObject Find(string settingsId)
         {
+            _logger?.LogDebug("Retrieving settings");
             return Store.Find(Builders<TSettingsObject>.Filter.Eq(x => x.Id, settingsId)).SingleOrDefault();
         }
     }
