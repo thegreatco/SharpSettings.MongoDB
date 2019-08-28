@@ -4,11 +4,17 @@
     <DebugType>portable</DebugType>
     <AssemblyName>SharpSettings.MongoDB</AssemblyName>
     <RootNamespace>SharpSettings.MongoDB</RootNamespace>
+    
+    <Title>SharpSettings.MongoDB</Title>
     <Authors>TheGreatCO</Authors>
     <Company>TheGreatCO</Company>
     <Description>Store your application settings in MongoDB and get notified when they get updated.</Description>
     <PackageProjectUrl>https://github.com/thegreatco/SharpSettings</PackageProjectUrl>
     <RepositoryUrl>https://github.com/thegreatco/SharpSettings</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    
     <Version Condition=" '$(FILE_VERSION)' == '' ">1.0.0.0</Version>
     <Version Condition=" '$(FILE_VERSION)' != '' ">$(FILE_VERSION)</Version>
     <AssemblyVersion Condition=" '$(FILE_VERSION)' == '' ">1.0.0.0</AssemblyVersion>

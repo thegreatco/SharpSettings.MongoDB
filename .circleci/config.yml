@@ -24,12 +24,13 @@ jobs:
             echo 'export FILE_VERSION=${CIRCLE_TAG}.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
             echo 'export NUGET_VERSION=${CIRCLE_TAG}' >> $BASH_ENV
             source $BASH_ENV
-      - run: curl -OL https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-      - run: nuget setApiKey ${NUGET_API_KEY}
       - run: dotnet restore SharpSettings.MongoDB.sln
-      - run: dotnet pack src/SharpSettings.MongoDB/SharpSettings.MongoDB.csproj -o ../../nupkgs --include-symbols /p:Version=${NUGET_VERSION}
-      - run: nuget push nupkgs/SharpSettings.MongoDB.${NUGET_VERSION}.nupkg -source https://api.nuget.org/v3/index.json
-      - run: nuget push nupkgs/SharpSettings.MongoDB.${NUGET_VERSION}.symbols.nupkg -source https://nuget.smbsrc.net/
+      - run: dotnet pack src/SharpSettings.MongoDB/SharpSettings.MongoDB.csproj -o nupkgs /p:Version=${NUGET_VERSION}
+      - run: dotnet nuget push nupkgs/SharpSettings.MongoDB.${NUGET_VERSION}.nupkg -k ${NUGET_API_KEY} -s https://api.nuget.org/v3/index.json
+      - store_artifacts:
+          path: nupkgs
+      - store_artifacts:
+          path: src/SharpSettings.MongoDB/SharpSettings.MongoDB/bin/Debug
 
 workflows:
   version: 2
