@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>SharpSettings.MongoDB</AssemblyName>
     <RootNamespace>SharpSettings.MongoDB</RootNamespace>
@@ -25,7 +25,10 @@
   <ItemGroup>
     <PackageReference Include="CompareNETObjects" Version="4.58.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
-    <PackageReference Include="SharpSettings" Version="1.1.0" />
+    <PackageReference Include="SharpSettings" Version="1.1.2" />
     <PackageReference Include="MongoDB.Driver" Version="2.9.1" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.3" />
   </ItemGroup>
 </Project>

@@ -199,7 +199,7 @@ namespace SharpSettings.MongoDB
         {
             DisposeAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         }
-
+        
         /// <summary>
         /// Asynchronously dispose of this <see cref="ISettingsWatcher{TId, TSettings}"/> object
         /// </summary>
