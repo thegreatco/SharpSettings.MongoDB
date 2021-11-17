@@ -156,10 +156,14 @@ namespace SharpSettings.MongoDB
                     _settingsUpdatedCallback?.Invoke(_settings);
                     _startupComplete = true;
 
-                    var changeStream = await _store.Store.WatchAsync(new ChangeStreamOptions()
-                    {
-                        FullDocument = ChangeStreamFullDocumentOption.UpdateLookup
-                    }, cancellationToken);
+                    var changeStream = await _store.Store.WatchAsync(
+                                           new ChangeStreamOptions()
+                                           {
+                                               FullDocument = ChangeStreamFullDocumentOption.UpdateLookup,
+                                               BatchSize = 1,
+                                               MaxAwaitTime = TimeSpan.FromSeconds(10)
+                                           },
+                                           cancellationToken);
                     _logger.LogTrace("Created Change Stream watcher.");
                     while (await changeStream.MoveNextAsync(cancellationToken).ConfigureAwait(false))
                     {
