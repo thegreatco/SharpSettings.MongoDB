@@ -3,7 +3,7 @@ A implementation of SharpSettings that stores and retrieves settings from a Mong
 
 | dev | master |
 | --- | ------ |
-| [![CircleCI](https://circleci.com/gh/thegreatco/SharpSettings.MongoDB/tree/dev.svg?style=svg)](https://circleci.com/gh/thegreatco/SharpSettings.MongoDB/tree/dev) | [![CircleCI](https://circleci.com/gh/thegreatco/SharpSettings.MongoDB/tree/master.svg?style=svg)](https://circleci.com/gh/thegreatco/SharpSettings.MongoDB/tree/master) |
+| [![Build and Test](https://github.com/thegreatco/SharpSettings.MongoDB/actions/workflows/build.yml/badge.svg?branch=dev)](https://github.com/thegreatco/SharpSettings.MongoDB/actions/workflows/build.yml) | [![Build and Test](https://github.com/thegreatco/SharpSettings.MongoDB/actions/workflows/build.yml/badge.svg)](https://github.com/thegreatco/SharpSettings.MongoDB/actions/workflows/build.yml)|
 
 See [SharpSetting](https://github.com/thegreatco/SharpSettings) for general usage instructions.
 # Usage
