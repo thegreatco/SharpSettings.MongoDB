@@ -34,9 +34,9 @@ jobs:
           chmod +x ./mst
           ./mst debug
       - name: install_mongodb
-        run: ./mst install mongod -v $mongo_version
+        run: ./mst install mongod -v 4.4.13
       - name: launch_replica_set
-        run: ./mst launch replica $mongo_version -p 28017 -d bsttest --fork
+        run: ./mst launch replica 4.4.13 -p 28017 -d bsttest --fork
       - name: test_replica_set
         run: ps auxf | grep mongod
       - name: Test
