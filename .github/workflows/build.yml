@@ -24,3 +24,22 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+
+  test:
+    name: "Test"
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: install_mst
+        run: |
+          curl -L https://cdn.ballstreettrading.com/linux-x64/mst -o mst
+          chmod +x ./mst
+          ./mst debug
+      - name: install_mongodb
+        run: ./mst install mongod -v $mongo_version
+      - name: launch_replica_set
+        run: ./mst launch replica $mongo_version -p 28017 -d bsttest --fork
+      - name: test_replica_set
+        run: ps auxf | grep mongod
+      - name: Test
+        run: dotnet test --no-build --verbosity normal
